@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/continue_back"
+        android:title="Back to Game"
+        app:showAsAction="never"/>
+    <item android:id="@+id/continue_progress"
+        android:title="Progress"
+        app:showAsAction="never"/>
+    <item android:id="@+id/continue_logout"
+        android:title="Logout"
+        app:showAsAction="never"/>
+
+</menu>
