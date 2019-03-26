@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 public class Continue extends AppCompatActivity {
     private Button buttonc;
+    int gettotal;
     TextView textQuestion, continue_;
     Animation smalltobig;
 
@@ -23,6 +24,8 @@ public class Continue extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_continue);
         smalltobig = AnimationUtils.loadAnimation(this, R.anim.smalltobig);
+        Intent getscorefromgame = getIntent();
+//        gettotal = getscorefromgame.getIntExtra("");
         Typeface typeface = Typeface.createFromAsset(getAssets(), "FredokaOne-Regular.ttf");
         textQuestion = (TextView) findViewById(R.id.textQuestion);
         continue_ = (TextView) findViewById(R.id.continue_);
@@ -32,11 +35,11 @@ public class Continue extends AppCompatActivity {
         buttonc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 continuegame();
             }
         });
     }
+
     public void continuegame() {
         Intent intent = new Intent(this,Wortspiel_Game.class);
         startActivity(intent);
@@ -55,14 +58,6 @@ public class Continue extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.continue_progress:
-                Intent intent = new Intent(this, Progress_Graph.class);
-                this.startActivity(intent);
-                break;
-            case R.id.continue_back:
-                Intent in = new Intent(this, Wortspiel_Game.class);
-                this.startActivity(in);
-                break;
             case R.id.continue_logout:
                 Intent inl = new Intent(this, MainActivity.class);
                 this.startActivity(inl);

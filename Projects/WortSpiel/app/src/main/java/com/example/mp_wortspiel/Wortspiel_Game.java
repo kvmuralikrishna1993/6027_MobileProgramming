@@ -1,5 +1,4 @@
 package com.example.mp_wortspiel;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -12,26 +11,52 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Arrays;
 import java.util.Random;
 
 public class Wortspiel_Game extends AppCompatActivity {
     private  int presCounter = 0;
+    Date gamedate;
+    //int totalscore;
+    SimpleDateFormat gameformat;
+    sqlData data = new sqlData(this);
     private  int maxPresCounter = 0;
     String[] shuffleletters;
     String word;
     Animation smallbigforth;
     ReadingWords Rw;
+    String formattedDate;
+    ImageView refresh;
+    String user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent getintowordgame = getIntent();
         setContentView(R.layout.activity_wortspiel__game);
+        gamedate = Calendar.getInstance().getTime();
+        gameformat = new SimpleDateFormat("dd-MMM-yyyy");
+        formattedDate = gameformat.format(gamedate);
+        user  = getintowordgame.getStringExtra("Username");
         TextView text = (TextView) findViewById(R.id.userame);
-        text.setText(getIntent().getExtras().getString("Welcome"));
+        text.setText(getintowordgame.getStringExtra("Welcome"));
+
         //game starts here.
+        refresh = (ImageView) findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
         Rw = new ReadingWords(this);
         word  = Rw.getwordfromdb(); //get word function for db
         System.out.println(word+" --> word");
@@ -48,7 +73,12 @@ public class Wortspiel_Game extends AppCompatActivity {
         }
         maxPresCounter = letters.length-1;
     }
-
+    public void onClick() {
+        super.onRestart();
+        Intent i = new Intent(Wortspiel_Game.this, Wortspiel_Game.class);  //your class
+        startActivity(i);
+        finish();
+    }
 
     public void onBackPressed() {
         Intent intent = new Intent();
@@ -59,7 +89,6 @@ public class Wortspiel_Game extends AppCompatActivity {
     //---------------------------------------------------------------
     public void openGraph() {
         Intent intent = new Intent(this, Progress_Graph.class);
-        intent.putExtra("Progress", "This is your progress");
         startActivity(intent);
     }
     //---------------------------------------------------------------
@@ -86,10 +115,9 @@ public class Wortspiel_Game extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Progressgraph:
-                Intent intent = new Intent(this, Progress_Graph.class);
-                intent.putExtra("Progress", "This is your progress");
-                this.startActivity(intent);
-                break;
+                    Intent intent = new Intent(this, Progress_Graph.class);
+                    this.startActivity(intent);
+                    break;
             case R.id.Logout:
                 Intent progress = new Intent(this, MainActivity.class);
                 this.startActivity(progress);
@@ -144,14 +172,16 @@ public class Wortspiel_Game extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.layoutParent);
 
         if(editText.getText().toString().equals(word)) {
-//  Toast.makeText(MainActivity.this, "Correct", Toast.LENGTH_SHORT).show();
-//            Rw.deletewordfromdb(word); //deleting word from db
-            Intent a = new Intent(Wortspiel_Game.this, Continue.class);
-            startActivity(a);
-            editText.setText("");
+            data.addScore(user, formattedDate);
+            Toast.makeText(Wortspiel_Game.this, "Correct", Toast.LENGTH_SHORT).show();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+//            Intent a = new Intent(Wortspiel_Game.this, Continue.class);
+//            startActivity(a);
         } else {
             Toast.makeText(Wortspiel_Game.this, "Wrong", Toast.LENGTH_SHORT).show();
-            editText.setText("");
+            //editText.setText("");
         }
         shuffleletters = shuffleArray(shuffleletters);
         linearLayout.removeAllViews();
@@ -160,6 +190,5 @@ public class Wortspiel_Game extends AppCompatActivity {
                 addView(linearLayout, key, editText);
             }
         }
-
     }
 }

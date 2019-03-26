@@ -1,5 +1,4 @@
 package com.example.mp_wortspiel;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,7 +15,7 @@ import java.lang.Math;
     // name of column which is Word
     private static final String column_word = "Word";
     //version of database
-    private static final int version = 2;
+    private static final int version = 1;
     //sql query to create table
     private static final String table_create = "create table " + table_name + " " + "("
             + "Word text not null);";
@@ -44,7 +43,6 @@ import java.lang.Math;
         Cursor cursor = dbw.rawQuery(query,null);
         // to insert we use contentvalues object
         ContentValues values = new ContentValues();
-
         values.put(column_word, word);
         // to insert row with contentvalues
         dbw.insert(table_name,null, values);
@@ -55,10 +53,9 @@ import java.lang.Math;
     }
 
     public void deletewordfromdb(String word) {
-        //delete query or direct delete
-//        String query = "delete from Words where Word = " + word;
-//        dbw.execSQL(query);
-        dbw.delete(table_name, column_word + "=" + word, null);
+        String query = "delete from Words where "+ column_word + " = " + word;
+        dbw.execSQL(query);
+        //dbw.delete(table_name, column_word + " = " + word, null);
     }
 
     @Override

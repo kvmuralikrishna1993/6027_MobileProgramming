@@ -26,7 +26,11 @@ import java.io.InputStreamReader;
 public class MainActivity extends AppCompatActivity {
     TextView words;
     private Button button;
-    String str = "";
+    EditText userlogin;
+    EditText passwordlogin;
+    String userloginstr;
+    String passwordloginstr;
+    int score = 0;
     BufferedReader br = null;
     sqlData database_main = new sqlData(this);
     ReadingWords database_word = new ReadingWords(this);
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    //log the exception
+
                 }
             }
         }
@@ -69,16 +73,17 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText userlogin = (EditText) findViewById(R.id.user_login);
-                EditText passwordlogin = (EditText) findViewById(R.id.password_login);
-                String userloginstr = userlogin.getText().toString();
-                String passwordloginstr = passwordlogin.getText().toString();
+                userlogin = (EditText) findViewById(R.id.user_login);
+                passwordlogin = (EditText) findViewById(R.id.password_login);
+                userloginstr = userlogin.getText().toString();
+                passwordloginstr = passwordlogin.getText().toString();
                 String res_password = database_main.search(userloginstr);
                 if (userloginstr.equals("") || (passwordloginstr.equals(""))) {
                     Toast message = Toast.makeText(MainActivity.this, "Username or password is not given", Toast.LENGTH_SHORT);
                     message.show();
                 }
                 else if (res_password.equals(passwordloginstr)) {
+
                     openGame(userloginstr);
                 } else {
                     Toast err_message = Toast.makeText(MainActivity.this, "Username and Password don't match", Toast.LENGTH_SHORT);
@@ -86,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         action.setTitle("WortSpiel");
         button = (Button) findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public void openGame(String user) {
         Intent intent = new Intent(this, Wortspiel_Game.class);
         intent.putExtra("Welcome", "Welcome " + user);
+        intent.putExtra("Username", userloginstr);
         startActivity(intent);
     }
 
