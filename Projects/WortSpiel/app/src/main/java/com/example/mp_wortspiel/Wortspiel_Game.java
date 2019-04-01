@@ -180,8 +180,8 @@ public class Wortspiel_Game extends AppCompatActivity {
 //            Intent a = new Intent(Wortspiel_Game.this, Continue.class);
 //            startActivity(a);
         } else {
+            editText.setText("");
             Toast.makeText(Wortspiel_Game.this, "Wrong", Toast.LENGTH_SHORT).show();
-            //editText.setText("");
         }
         shuffleletters = shuffleArray(shuffleletters);
         linearLayout.removeAllViews();

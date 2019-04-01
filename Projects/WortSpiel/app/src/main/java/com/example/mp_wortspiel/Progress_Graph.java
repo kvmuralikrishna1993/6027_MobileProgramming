@@ -90,7 +90,6 @@ public class Progress_Graph extends AppCompatActivity {
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        staticLabelsFormatter.setVerticalLabels(new String[] {distinct});
         staticLabelsFormatter.setHorizontalLabels(new String[] {"1","2","3","4","5","6","7","8","9","10"});
 
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
